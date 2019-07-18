@@ -1,5 +1,7 @@
 @import "../node_modules/bootstrap/scss/bootstrap"
 
+body
+  padding: 3em 0.5em
 .App
   text-align: center
 
@@ -38,3 +40,40 @@ code
 
   to
     transform: rotate(360deg)
+.wrapper
+  display: flex
+  flex-direction: row
+  flex-wrap: wrap
+.tile
+  border: 1px solid $gray-300
+  background-color: $gray-100
+  border-radius: 0.5em
+  margin: 1.5em auto
+  overflow: hidden
+  padding: 0
+  &--top
+    overflow: hidden
+    width: 100%
+    margin: 0
+    padding: 0
+    min-height: 75%
+    &__bg
+      width: 100%
+  &--body
+    padding: 0.75em
+
+.search
+  display: flex
+  flex-direction: row
+  flex-wrap: wrap
+  &--input
+    flex: 5
+    border: 0
+    box-shadow: 0 1px 0 $gray-300
+    transition: 0.25s ease all
+    &:focus
+      transition: 0.25s ease all
+      box-shadow: 0 1px 0 $gray-800
+  &--button
+    flex: 1
+    margin-left: 1em

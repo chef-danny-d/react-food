@@ -1,41 +1,56 @@
-import React, {useEffect, Fragment, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.sass';
 import Recipe from './components/Recipe'
-import Button from '@material-ui/core/Button';
+import Modal from './components/Modal'
+import uuid from 'uuid'
 
 function App() {
-    const API_ID = 'd3002bb8'
-    const API_KEY = 'ecd31d0d6c5149c875fc6d98d39ce093'
+    const API_ID = '5a35bffa'
+    const API_KEY = 'ca20fcdadad964924a79fb451400720b'
 
+    //states
     const [recipes, setRecipes] = useState([])
+    const [search, setSearch] = useState('')
+    const [query, setQuery] = useState('chicken')
 
     useEffect(() => {
         getData()
-    },[])
+    },[query])
 
     const getData = async () => {
-        const response = await fetch(`https://api.edamam.com/search?q=chicken&app_id=${API_ID}&app_key=${API_KEY}`)
+        const response = await fetch(`https://api.edamam.com/search?q=${query}&app_id=${API_ID}&app_key=${API_KEY}&to=12}`)
         const data = await response.json()
         setRecipes(data.hits)
         console.log(data)
     }
 
+    const updateSearch = e => {
+        setSearch(e.target.value)
+    }
+
+    const getSearch = e => {
+        //running on submit
+        e.preventDefault()
+        setQuery(search)
+    }
+
   return (
       <div className="container">
           <div className="flex-column">
-              <form className="form-group">
-                  <input className="input-group" type="text"/>
-                  <button className="btn btn-primary" type="submit">Search</button>
+              <form className="search" onSubmit={getSearch}>
+                  <input className="search--input" value={search} onChange={updateSearch} type="text" placeholder="Enter ingredient, recipe, or keyword"/>
+                  <button className="btn btn-primary search--button" type="submit">Search</button>
               </form>
-              <div className="card-columns">
+              <div className="wrapper">
                   {recipes.map(recipes => (
                       <Recipe
                           title={recipes.recipe.label}
-                          calories={Math.round(recipes.recipe.calories)}
+                          calories={Math.trunc(recipes.recipe.calories)}
                           image={recipes.recipe.image}
-                          key={recipes.recipe.id}
+                          key={uuid()}
                       />
                   ))}
+                  <Modal />
               </div>
           </div> {/*end of flex column*/}
       </div> /*end of main wrapper*/
